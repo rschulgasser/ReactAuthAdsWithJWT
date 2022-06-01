@@ -26,8 +26,8 @@ useEffect(() => {
  <div className='col-md-6 offset-md-3'>
   {ads &&  ads.map(b =>
    <Ad key={b.id}
-          ad={b}
-          deleteMode={true}
+          simpleAd={b}
+          
           refreshAds={getAds}
     />)}
     </div>

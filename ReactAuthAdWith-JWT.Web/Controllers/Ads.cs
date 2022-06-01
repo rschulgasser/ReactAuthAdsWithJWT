@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using ReactAuthAdWith_JWT.Data;
+using ReactAuthAdWith_JWT.Web.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -37,22 +38,37 @@ namespace ReactAuthAdWith_JWT.Web.Controllers
         
         [HttpGet]
         [Route("getallads")]
-        public List<Ad> GetAllAds()
+        public List<AdViewModel> GetAllAds()
         {
             var repo = new AdsRepository(_connectionString);
-            var r=repo.GetAds();
-            return r;
-        }
+            string email = User.FindFirst("user")?.Value;
+            return repo.GetAds().Select(a => {
+                return new AdViewModel
+            {
+                Ad = a,
+                CanDelete = a.User.Email == email,
+                UserName = $"{a.User.FirstName} {a.User.LastName}"
+            };
+        }).ToList();
+    }
         [Authorize]
         [HttpGet]
         [Route("getadsforuser")]
-        public List<Ad> GetUsersAds()
+        public List<AdViewModel> GetUsersAds()
         {
             var repo = new AdsRepository(_connectionString);
             string email = User.FindFirst("user")?.Value;
             var user = repo.GetCurrentUser(email);
         
-            return repo.GetAdsForUser(user.Id);
+            
+            return repo.GetAdsForUser(user.Id).Select(a => {
+                return new AdViewModel
+                {
+                    Ad = a,
+                    CanDelete = a.User.Email == email,
+                    UserName = $"{a.User.FirstName} {a.User.LastName}"
+                };
+            }).ToList();
         }
 
 
@@ -65,8 +81,8 @@ namespace ReactAuthAdWith_JWT.Web.Controllers
             var repo = new AdsRepository(_connectionString);
             string email = User.FindFirst("user")?.Value;
             var user = repo.GetCurrentUser(email);
-
-            if (user.Ads.Any(a => ad.Id == a.Id))
+            var ads = repo.GetAds();
+            if (ads.Any(a => a.Id==ad.Id))
             {
                 repo.Delete(ad.Id);
             }

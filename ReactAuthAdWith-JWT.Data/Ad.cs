@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace ReactAuthAdWith_JWT.Data
@@ -13,7 +14,9 @@ namespace ReactAuthAdWith_JWT.Data
         public string PhoneNumber { get; set; }
         public DateTime Date { get; set; }
 
-        public User User { get; set; }
+      
         public int UserId { get; set; }
+        [JsonIgnore]
+        public User User { get; set; }
     }
 }

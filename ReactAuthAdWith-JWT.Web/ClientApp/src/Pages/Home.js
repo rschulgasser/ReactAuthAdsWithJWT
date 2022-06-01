@@ -11,35 +11,26 @@ const Home = () => {
 
   const getAds = async () => {
 
-    console.log('before'); 
     const { data } = await getAxios().get('/api/ads/getallads');
-    console.log('after'); 
-    const{ad}=data;
-    setAds(ad);
+  
+    setAds(data);
    
 }
 useEffect(() => {
  
 
   getAds();
+  console.log(ads); 
   
 }, []);
-
-const deleteMode=(id)=>{
-  if(!user){
-    return false;
-  }
-  console.log(id===user.id);
- return id===user.id;
-}
 
 
  return <>
  <div className='col-md-6 offset-md-3'>
-  {ads &&  ads.map(b =>
+  {ads.map(b =>
    <Ad key={b.id}
-          ad={b}
-          deleteMode={deleteMode(b.id)}
+          simpleAd={b}
+          deleteMode={b.candelete}
           refreshAds={getAds}
     />)}
     </div>
