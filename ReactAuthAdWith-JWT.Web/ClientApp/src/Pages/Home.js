@@ -30,7 +30,6 @@ useEffect(() => {
   {ads.map(b =>
    <Ad key={b.id}
           simpleAd={b}
-          deleteMode={b.candelete}
           refreshAds={getAds}
     />)}
     </div>

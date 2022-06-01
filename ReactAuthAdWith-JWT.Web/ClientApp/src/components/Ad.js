@@ -1,7 +1,7 @@
 import React from 'react';
 import getAxios from '../AuthAxios';
 
-const Ad = ({simpleAd, deleteMode,refreshAds}) => {
+const Ad = ({simpleAd, refreshAds}) => {
     const{ad, canDelete, userName}=simpleAd;
   const{phoneNumber,description,date,id}=ad;
 
